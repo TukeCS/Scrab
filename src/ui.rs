@@ -32,7 +32,6 @@ fn get_default_search_dir() -> String {
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("File Finder");
 
             ui.horizontal(|ui| {
                 ui.label("Search Directory: ");
