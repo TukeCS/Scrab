@@ -1,5 +1,4 @@
 use eframe::egui;
-use std::env;
 
 pub struct MyApp {
     pub file_name: String,
