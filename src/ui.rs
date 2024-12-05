@@ -4,6 +4,7 @@ pub struct MyApp {
     pub file_name: String,
     pub search_dir: String,
     pub results: Vec<String>,
+    pub case_sensitive: bool,
 }
 
 impl Default for MyApp {
@@ -12,6 +13,7 @@ impl Default for MyApp {
             file_name: String::new(),
             search_dir: get_default_search_dir(),
             results: Vec::new(),
+            case_sensitive: false,
         }
     }
 }
@@ -41,10 +43,14 @@ impl eframe::App for MyApp {
             ui.horizontal(|ui| {
                 ui.label("File Name: ");
                 ui.text_edit_singleline(&mut self.file_name);
+                ui.checkbox(
+                    &mut self.case_sensitive,
+                    "Case Sensitive",
+            );  
             });
 
             if ui.button("Search").clicked() {
-                self.results = crate::file_search::search_file(&self.search_dir, &self.file_name)
+                self.results = crate::file_search::search_file(&self.search_dir, &self.file_name, self.case_sensitive)
                     .into_iter()
                     .map(|path| path.to_string_lossy().to_string())
                     .collect();
@@ -54,8 +60,13 @@ impl eframe::App for MyApp {
             ui.label("Results:");
 
             egui::ScrollArea::vertical().show(ui, |ui| {
-                for result in &self.results {
-                    ui.label(result);
+                if self.results.len() == 0 { 
+                    ui.label("No Results"); 
+                }
+                else {
+                    for result in &self.results {
+                        ui.label(result);
+                    }
                 }
             });
         });
