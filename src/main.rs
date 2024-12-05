@@ -6,9 +6,16 @@ mod file_search;
 use ui::MyApp;
 
 fn main() -> Result<(), eframe::Error> {
+    let options = eframe::NativeOptions {
+    viewport: egui::ViewportBuilder::default()
+        .with_inner_size([500.0, 400.0])
+        .with_min_inner_size([500.0, 400.0])
+        .with_transparent(true), // To have rounded corners we need transparency
+        ..Default::default()
+    };
     eframe::run_native(
         "Scrab",
-        eframe::NativeOptions::default(),
+        options,
         Box::new(|_cc| Ok(Box::<MyApp>::default())),
     )
 }
