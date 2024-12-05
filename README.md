@@ -13,7 +13,7 @@
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/scrab.git
+   git clone https://github.com/TukeCS/scrab.git
    cd scrab
 
 2. **Build the project:**
