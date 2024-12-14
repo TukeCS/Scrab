@@ -6,6 +6,4 @@ edition = "2021"
 [dependencies]
 eframe = "0.29.1"
 egui = "0.29.1"
-path-clean = "1.0.1"
 walkdir = "2.5.0"
-
