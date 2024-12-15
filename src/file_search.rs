@@ -1,24 +1,26 @@
-use walkdir::WalkDir;
 use std::path::{Path, PathBuf};
-use path_clean::PathClean;
+use walkdir::WalkDir;
 
 pub fn search_file(start_path: &str, file_name: &str, case_sensitivity: bool) -> Vec<PathBuf> {
-    let cleaned_path = Path::new(start_path).clean(); // Normalize the path
-    if !cleaned_path.exists() {
-        println!("The directory does not exist: {}", cleaned_path.display());
+    let path = Path::new(start_path);
+    if !path.exists() {
+        println!("The directory does not exist: {}", path.display());
         return vec![];
     }
 
-    WalkDir::new(&cleaned_path)
+    WalkDir::new(&path)
         .into_iter()
-        .filter_map(Result::ok)
+        .flatten()
         .filter(|entry| {
             entry.path().is_file() && {
                 let entry_file_name = entry.file_name();
                 if case_sensitivity {
-                    entry_file_name == file_name
+                    entry_file_name.to_string_lossy().contains(file_name)
                 } else {
-                    entry_file_name.to_string_lossy().eq_ignore_ascii_case(file_name)
+                    entry_file_name
+                        .to_string_lossy()
+                        .to_ascii_lowercase()
+                        .contains(&file_name.to_ascii_lowercase())
                 }
             }
         })
